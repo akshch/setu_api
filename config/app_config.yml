@@ -1,0 +1,32 @@
+development:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  telegram:
+    endpoint: 'https://api.telegram.org/bot'
+    token: '1815056790:AAF95WAFu5q52rq2vMnfGEzVPrxS1XQmG3Y'
+    parseMode: 'HTML'
+    newline: '%0A%0A'
+    newline_without_space: '%0A'
+  maharashtra:
+    endpoint: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public'
+    chat_id: '@thane_vaccine_alerts'
+    district:
+      thane: '512'
+
+production:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  telegram:
+    endpoint: 'https://api.telegram.org/bot'
+    token: '1815056790:AAF95WAFu5q52rq2vMnfGEzVPrxS1XQmG3Y'
+    parseMode: 'HTML'
+    newline: '%0A%0A'
+    newline_without_space: '%0A'
+  maharashtra:
+    endpoint: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public'
+    chat_id: '@thane_vaccine_alerts'
+    district:
+      thane: '512'
+
