@@ -16,7 +16,7 @@ class Center < ActiveRecord::Base
 
   def send_message_to_telegram
     text = get_text_format
-    url = AppConfig['telegram']['endpoint']+AppConfig['telegram']['token']+'/sendMessage'+'?chat_id='+AppConfig['maharashtra']['chat_id']+'&text='"#{text}"+'&parse_mode='+AppConfig['telegram']['parseMode']
+    url = AppConfig['telegram']['endpoint']+AppConfig['telegram']['token']+'/sendMessage'+'?chat_id='+channel+'&text='"#{text}"+'&parse_mode='+AppConfig['telegram']['parseMode']
     response = HTTParty.get(url)
   end
   

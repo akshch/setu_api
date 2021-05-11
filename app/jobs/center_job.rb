@@ -7,6 +7,7 @@ class CenterJob < ApplicationJob
       cntr.send_message_to_telegram
     else
       Api::V1::CentersController.new.index
+      Api::V1::CentersController.new.pincode
     end
   end
 end

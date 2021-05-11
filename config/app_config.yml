@@ -10,9 +10,12 @@ development:
     newline_without_space: '%0A'
   maharashtra:
     endpoint: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public'
-    chat_id: '@thane_vaccine_alerts'
-    district:
-      thane: '512'
+    thane:
+      chat_id: '@thane_vaccine_alerts'
+      code: '392'
+    bhiwandi:
+      chat_id: '@bhiwandi_vaccine_alerts'
+      pincode: '421302'
 
 production:
   redis:
@@ -26,7 +29,10 @@ production:
     newline_without_space: '%0A'
   maharashtra:
     endpoint: 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public'
-    chat_id: '@thane_vaccine_alerts'
-    district:
-      thane: '512'
+    thane:
+      chat_id: '@thane_vaccine_alerts'
+      code: '392'
+    bhiwandi:
+      chat_id: '@bhiwandi_vaccine_alerts'
+      pincode: '421302'
 
