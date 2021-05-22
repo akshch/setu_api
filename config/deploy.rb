@@ -10,7 +10,7 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'setu_api'
-set :domain, '167.71.229.68'
+set :domain, '13.233.9.54'
 set :deploy_to, '/home/deployer/apps/setu_api'
 set :repository, 'git@github.com:akshch/setu_api.git'
 set :branch, 'main'
@@ -30,7 +30,7 @@ set :ssh_options, "-A"
 # set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
 set :shared_path, -> { "#{fetch(:deploy_to)}/shared" }
 set :shared_dirs, fetch(:shared_dirs, []).push("tmp")
-set :shared_files, fetch(:shared_files, []).push("config/database.yml", "config/secrets.yml")
+set :shared_files, fetch(:shared_files, []).push("config/database.yml", "config/master.key")
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -49,10 +49,10 @@ task :setup do
   # command %{rbenv install 2.3.0 --skip-existing}
   command %{gem install bundler}
   command %[touch "#{fetch(:shared_path)}/config/database.yml"]
-  command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
+  command %[touch "#{fetch(:shared_path)}/config/master.key"]
   command %[touch "#{fetch(:shared_path)}/config/app_config.yml"]
   command %[mkdir "#{fetch(:shared_path)}/tmp/pids"]
-  comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and app_config.yml."
+  comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'master.key' and app_config.yml."
 end
 
 desc "Deploys the current version to the server."
@@ -66,7 +66,7 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    invoke :'rails:assets_precompile'
+    # invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
     on :launch do
