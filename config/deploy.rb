@@ -10,7 +10,7 @@ require 'mina/rvm'    # for rvm support. (https://rvm.io)
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'setu_api'
-set :domain, '13.233.9.54'
+set :domain, '142.93.218.46'
 set :deploy_to, '/home/deployer/apps/setu_api'
 set :repository, 'git@github.com:akshch/setu_api.git'
 set :branch, 'main'
@@ -70,6 +70,7 @@ task :deploy do
     invoke :'deploy:cleanup'
 
     on :launch do
+      invoke :'rewrite_cronjob'
       # in_path(fetch(:current_path)) do
       #   command %{mkdir -p tmp/}
       #   command %{touch tmp/restart.txt}
@@ -77,6 +78,15 @@ task :deploy do
     end
   end
 
+desc "Write crontab whenever"
+task :rewrite_cronjob do
+  queue %{
+    echo "-----> Update crontab for #{current_path} #{release_path}"
+    #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env} -c]}
+    #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env}]}
+    #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env} -w  ]}
+  }
+end
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
   # run(:local){ say 'done' }
 end

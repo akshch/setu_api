@@ -3,17 +3,21 @@ class Api::V1::CentersController < ApplicationController
   def index
     params = { district_id: AppConfig.maharashtra['thane']['code'], date: Date.today.strftime('%d-%m-%Y') }
     result = ApiSetu.new.fetch_by_district(params)
-    data = result["sessions"]
-    channel = AppConfig['maharashtra']['thane']['chat_id']
-    create_data(data, channel)
+    if result.code == 200
+      data = result["sessions"]
+      channel = AppConfig['maharashtra']['thane']['chat_id']
+      create_data(data, channel)
+    end
   end
 
   def pincode
     params = { pincode: AppConfig['maharashtra']['bhiwandi']['pincode'], date: Date.today.strftime('%d-%m-%Y')}
     result = ApiSetu.new.fetch_by_pincode(params)
-    data = result["sessions"]
-    channel = AppConfig['maharashtra']['bhiwandi']['chat_id']
-    create_data(data, channel)
+    if result.code == 200
+      data = result["sessions"]
+      channel = AppConfig['maharashtra']['bhiwandi']['chat_id']
+      create_data(data, channel)
+    end
   end
 
   private
