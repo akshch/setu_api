@@ -70,7 +70,6 @@ task :deploy do
     invoke :'deploy:cleanup'
 
     on :launch do
-      invoke :'rewrite_cronjob'
       # in_path(fetch(:current_path)) do
       #   command %{mkdir -p tmp/}
       #   command %{touch tmp/restart.txt}
@@ -78,15 +77,30 @@ task :deploy do
     end
   end
 
-desc "Write crontab whenever"
-task :rewrite_cronjob do
-  queue %{
-    echo "-----> Update crontab for #{current_path} #{release_path}"
-    #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env} -c]}
-    #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env}]}
-    #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env} -w  ]}
-  }
+desc "Run cronjob"
+task :update_whenever => :environment do
+  set :domain, '142.93.218.46'
+  invoke :'whenever:clear'
+  invoke :'whenever:write'
 end
+
+  namespace :whenever do
+    desc "Clear crontab"
+    task :clear do
+      queue %{
+        echo "-----> Clear crontab for #{domain}"
+        #{echo_cmd %[cd #{deploy_to}/current ; bundle exec whenever --clear-crontab --set environment=production]}
+      }
+    end
+    desc "Write crontab"
+    task :write do
+      queue %{
+        echo "-----> Update crontab for #{domain}"
+        #{echo_cmd %[cd #{deploy_to}/current ;bundle exec whenever --write-crontab --set environment=production]}
+      }
+    end
+  end
+
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
   # run(:local){ say 'done' }
 end
