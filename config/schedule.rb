@@ -13,7 +13,7 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 1.minutes do
+every 1.minute do
   runner "CenterJob.perform_async"
 end
 

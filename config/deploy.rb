@@ -78,8 +78,7 @@ task :deploy do
   end
 
 desc "Run cronjob"
-task :update_whenever => :environment do
-  set :domain, '142.93.218.46'
+task :update_whenever => :remote_environment do
   invoke :'whenever:clear'
   invoke :'whenever:write'
 end
@@ -87,17 +86,13 @@ end
   namespace :whenever do
     desc "Clear crontab"
     task :clear do
-      queue %{
-        echo "-----> Clear crontab for #{domain}"
-        #{echo_cmd %[cd #{deploy_to}/current ; bundle exec whenever --clear-crontab --set environment=production]}
-      }
+        comment "-----> Clear crontab for 142.93.218.46"
+        command %[cd #{fetch(:deploy_to)}/current ; bundle exec whenever --clear-crontab --set environment=production]
     end
     desc "Write crontab"
     task :write do
-      queue %{
-        echo "-----> Update crontab for #{domain}"
-        #{echo_cmd %[cd #{deploy_to}/current ;bundle exec whenever --write-crontab --set environment=production]}
-      }
+      comment "-----> Update crontab for 142.93.218.46"
+        command %[cd #{fetch(:deploy_to)}/current ;bundle exec whenever --write-crontab --set environment=production]
     end
   end
 
