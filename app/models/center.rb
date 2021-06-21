@@ -16,7 +16,8 @@ class Center < ActiveRecord::Base
 
   def send_message_to_telegram
     text = get_text_format
-    url = AppConfig['telegram']['endpoint']+AppConfig['telegram']['token']+'/sendMessage'+'?chat_id='+channel+'&text='"#{text}"+'&parse_mode='+AppConfig['telegram']['parseMode']
+    channel_token = get_channel_token
+    url = AppConfig['telegram']['endpoint']+channel_token+'/sendMessage'+'?chat_id='+channel+'&text='"#{text}"+'&parse_mode='+AppConfig['telegram']['parseMode']
     response = HTTParty.get(url)
   end
   
@@ -27,5 +28,13 @@ class Center < ActiveRecord::Base
    'Available Capacity:'+available_capacity+AppConfig['telegram']['newline_without_space']+
    'Fee Type:'+fee_type+AppConfig['telegram']['newline_without_space']+
    'Vaccine:'+vaccine
+  end
+
+  def get_channel_token
+    if self.channel == "@thane_vaccine_alerts"
+      AppConfig['maharashtra']['thane']['token']
+    else
+      AppConfig['maharashtra']['bhiwandi']['token']
+    end
   end
 end
