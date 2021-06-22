@@ -20,7 +20,7 @@ development:
 
 production:
   redis:
-    host: 127.0.0.1
+    host: 142.93.218.46
     port: 6379
   telegram:
     endpoint: 'https://api.telegram.org/bot'

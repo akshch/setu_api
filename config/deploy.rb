@@ -70,9 +70,6 @@ task :deploy do
     invoke :'deploy:cleanup'
 
     on :launch do
-      invoke :'rewrite_cronjob'
-      queue "mkdir -p #{deploy_to}/#{current_path}/tmp/"
-      queue "touch #{deploy_to}/#{current_path}/tmp/restart.txt"
       # in_path(fetch(:current_path)) do
       #   command %{mkdir -p tmp/}
       #   command %{touch tmp/restart.txt}
@@ -82,11 +79,10 @@ task :deploy do
 
   desc "Write crontab whenever"
   task :rewrite_cronjob do
-    queue %{
-      echo "-----> Update crontab for #{current_path} #{release_path}"
-      #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env} -c]}
-      #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env}]}
-      #{echo_cmd %[cd #{deploy_to!}/current ; bundle exec whenever --set environment=#{rails_env} -w  ]}
+    command %{
+      #{echo_cmd %[cd #{fetch(:deploy_to)}/current ; bundle exec whenever --set environment=production -c]}
+      #{echo_cmd %[cd #{fetch(:deploy_to)}/current ; bundle exec whenever --set environment=production]}
+      #{echo_cmd %[cd #{fetch(:deploy_to)}/current ; bundle exec whenever --set environment=production -w  ]}
     }
   end
 
